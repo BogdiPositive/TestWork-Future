@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Card from "./Card";
 import "../style/Books.css";
 import { useDispatch } from "react-redux";
-import { handelSearchQuery } from "../store/search";
+import { fetchBooks } from "../store/search";
 
 
 // AIzaSyB4YE5q0m9o4GCVyM7PUGgZ3013M3ffgCg
@@ -17,14 +17,10 @@ const Cards = () => {
   const sortedBy = useSelector((state) => state.search.sortedBy)
   const allSearchBooks = useSelector((state) => state.search.allSearch);
  
-  const handleSearch = async () => {
-    
-      let response = await fetch(
-        
-        `https://www.googleapis.com/books/v1/volumes?q=${title}&subject=${category}&orderBy=${sortedBy}&startIndex=${loadMore}&maxResults=30&key=AIzaSyB4YE5q0m9o4GCVyM7PUGgZ3013M3ffgCg`
-      );
-      let data = await response.json();
-      dispatch(handelSearchQuery(data));
+  const handleSearch = () => {
+     let url = `https://www.googleapis.com/books/v1/volumes?q=${title}&subject=${category}&orderBy=${sortedBy}&startIndex=${loadMore}&maxResults=30&key=AIzaSyB4YE5q0m9o4GCVyM7PUGgZ3013M3ffgCg`
+
+      dispatch(fetchBooks(url));
     
     setLoadMore(loadMore + 30) 
 

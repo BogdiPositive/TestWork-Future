@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { category, sortingBy } from "../assets/constants";
 import { useDispatch } from "react-redux";
-import { handelSearchQuery, handelSearchMedia } from "../store/search";
+import { fetchBooks, handelSearchMedia } from "../store/search";
 import { useNavigate } from "react-router";
 
 const Filter = () => {
@@ -9,25 +9,29 @@ const Filter = () => {
   const [searchCategory, setSearchCategory] = useState("all");
   const [searchSortedBy, setSearchSortedBy] = useState("relevance");
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleSearch = async () => {
-   
-      let response = await fetch(
-        
-        `https://www.googleapis.com/books/v1/volumes?q=${searchTitle}&subject=${searchCategory}&orderBy=${searchSortedBy}&maxResults=30&key=AIzaSyB4YE5q0m9o4GCVyM7PUGgZ3013M3ffgCg`
-      );
-      let data = await response.json();
-      dispatch(handelSearchQuery(data));
-    
+  const handleSearch = () => {
+    //   let response = await fetch(
+
+    //     `https://www.googleapis.com/books/v1/volumes?q=${searchTitle}&subject=${searchCategory}&orderBy=${searchSortedBy}&maxResults=30&key=AIzaSyB4YE5q0m9o4GCVyM7PUGgZ3013M3ffgCg`
+    //   );
+    //   let data = await response.json();
+    //   dispatch(handelSearchQuery(data));
+
     const query = {
-        title: searchTitle,
-        category: searchCategory,
-        sortedBy: searchSortedBy
-    }
-    dispatch(handelSearchMedia(query))
-    navigate('/')
+      title: searchTitle,
+      category: searchCategory,
+      sortedBy: searchSortedBy,
+    };
+    let url = `https://www.googleapis.com/books/v1/volumes?q=${query.title}&subject=${query.category}&orderBy=${query.sortedBy}&maxResults=30&key=AIzaSyB4YE5q0m9o4GCVyM7PUGgZ3013M3ffgCg`
+    dispatch(handelSearchMedia(query));
+    dispatch(fetchBooks(url))
+    navigate("/");
   };
+
+
+ 
 
   return (
     <div>
@@ -42,7 +46,12 @@ const Filter = () => {
             value={searchTitle}
             onChange={(e) => setSearchTitle(e.target.value)}
           />
-          <button disabled={searchTitle===""? true : false} onClick={handleSearch}>&#9906;</button>
+          <button
+            disabled={searchTitle === "" ? true : false}
+            onClick={handleSearch}
+          >
+            &#9906;
+          </button>
         </div>
         <div>
           <div>
