@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, {useState} from "react";
 import { category, sortingBy } from "../assets/constants";
 import { useDispatch } from "react-redux";
-import { fetchBooks, handelSearchMedia } from "../store/search";
+import { fetchBooks, handelSearchMedia ,handelSearchQuery } from "../store/search";
 import { useNavigate } from "react-router";
 
 const Filter = () => {
@@ -25,6 +25,7 @@ const Filter = () => {
       sortedBy: searchSortedBy,
     };
     let url = `https://www.googleapis.com/books/v1/volumes?q=${query.title}&subject=${query.category}&orderBy=${query.sortedBy}&maxResults=30&key=AIzaSyB4YE5q0m9o4GCVyM7PUGgZ3013M3ffgCg`
+    dispatch(handelSearchQuery())
     dispatch(handelSearchMedia(query));
     dispatch(fetchBooks(url))
     navigate("/");
@@ -34,28 +35,30 @@ const Filter = () => {
  
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <div>
-        <h1>Search for books</h1>
+        <h1 className="font-bold">Search for books</h1>
       </div>
-      <div>
-        <div>
+      <div className="flex flex-col gap-7 items-center">
+        <div className="border-2 border-gray-100 hover:border-gray-700">
           <input
+            className="focus:outline-none"
             type="text"
-            placeholder="search.."
+            placeholder="search..."
             value={searchTitle}
             onChange={(e) => setSearchTitle(e.target.value)}
           />
           <button
+            className="bg-inherit"
             disabled={searchTitle === "" ? true : false}
             onClick={handleSearch}
           >
             &#9906;
           </button>
         </div>
-        <div>
-          <div>
-            <p>Categories</p>
+        <div className="flex gap-10">
+          <div className="flex gap-2 items-center">
+            <p className="font-bold">Categories</p>
             <select
               name="categories"
               onChange={(e) => setSearchCategory(e.target.value)}
@@ -67,11 +70,12 @@ const Filter = () => {
               ))}
             </select>
           </div>
-          <div>
-            <p>Sorting by</p>
+          <div className="flex gap-2 items-center">
+            <p className="font-bold">Sorting by</p>
             <select
               name="sortingBy"
               onChange={(e) => setSearchSortedBy(e.target.value)}
+              
             >
               {sortingBy.map((sort) => (
                 <option key={sort} value={sort}>

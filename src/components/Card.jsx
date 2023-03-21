@@ -1,29 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router";
-import "../style/Card.css";
 const Card = ({ bookInfo }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { volumeInfo } = bookInfo;
   return (
-
-    <div className="card"
-    onClick={() => navigate(`/book-detail/${bookInfo.id}`)}
+    <div
+      className="w-[350px] h-[400px] flex flex-col gap-2  border bg-mainColor border-black items-center p-3 hover:scale-105"
+      onClick={() => navigate(`/book-detail/${bookInfo.id}`)}
     >
-      {volumeInfo.imageLinks ? (
+      
         <img
-          className="card__image"
-          src={
-            volumeInfo.imageLinks.thumbnail
-              ? volumeInfo.imageLinks.thumbnail
-              : "#"
-          }
+          className="w-[250px] h-[300px] overflow-hidden"
+          src={volumeInfo?.imageLinks?.thumbnail}
           alt="book-image"
         />
-      ) : (
-        <p>No image</p>
-      )}
+      
 
-      <h5 className="card__title">{volumeInfo.title}</h5>
+      <h5 className="font-bold text-xl">{volumeInfo.title}</h5>
       <p className="card__author">{volumeInfo.authors}</p>
       <p className="card__categories">{volumeInfo.categories}</p>
     </div>

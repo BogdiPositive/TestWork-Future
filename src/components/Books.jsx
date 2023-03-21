@@ -1,9 +1,8 @@
 import React, {useState} from "react";
 import { useSelector } from "react-redux";
 import Card from "./Card";
-import "../style/Books.css";
 import { useDispatch } from "react-redux";
-import { fetchBooks } from "../store/search";
+import { fetchBooks} from "../store/search";
 
 
 // AIzaSyB4YE5q0m9o4GCVyM7PUGgZ3013M3ffgCg
@@ -27,16 +26,18 @@ const Cards = () => {
   };
 
   return (
-    <div>
-      <h3>{allSearchBooks.totalItems}</h3>
-      <div className="booksContainer">
+    <div className="mt-5">
+      {books.length > 0 && (
+      <h3 className="font-bold text-2xl text-start">total books found: {allSearchBooks.totalItems}</h3>
+      )}
+      <div className="w-full flex flex-wrap gap-5 mt-10 items-center">
         {books.map((book) => (
           <Card bookInfo={book} key={book.id} />
         ))}
       </div>
-      {books.length > 0 ? (
-        <div><button onClick={handleSearch}>Показать еще</button></div>
-      ): <></>}
+      {books.length > 0 && (
+        <div className="mt-5"><button className="" onClick={handleSearch}>Показать еще</button></div>
+      )}
       
     </div>
   );
