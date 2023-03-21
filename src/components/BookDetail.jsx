@@ -7,7 +7,6 @@ const BookDetail = () => {
 const {bookId} = useParams();
 const books = useSelector((state) => state.search.books);
 const {volumeInfo} = books.find(book => book.id === bookId)
-console.log(volumeInfo)
   return (
     <div className='flex gap-4 mt-20'>
         <div className='w-[450px] h-[500px]'>
